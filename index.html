@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CyberLite — Resource-efficient cybersecurity language model research</title>
+  <meta name="description" content="CyberLite is an open research project investigating whether a sub-billion-parameter language model can be post-trained into a practical, locally deployable cybersecurity assistant.">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#fbfaf6">
+  <link rel="canonical" href="https://cyberlite.braydos.com/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CyberLite — Resource-efficient cybersecurity language model research">
+  <meta property="og:description" content="Can a sub-billion-parameter model be post-trained into a useful cybersecurity assistant while remaining practical on consumer hardware?">
+  <meta property="og:url" content="https://cyberlite.braydos.com/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="CyberLite — Research preview">
+  <meta name="twitter:description" content="Resource-efficient cybersecurity language model research. No trained checkpoints or verified benchmark results yet.">
+
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/main.js" defer></script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" data-header>
+    <div class="wrap header-inner">
+      <a class="brand" href="#top" aria-label="CyberLite, back to top">
+        <span class="brand-mark" aria-hidden="true">CL</span>
+        <span class="brand-name">CyberLite</span>
+        <span class="brand-tag">research preview</span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+        <span class="nav-toggle-label">Menu</span>
+        <span class="nav-toggle-icon" aria-hidden="true"></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a href="#overview">Overview</a>
+        <a href="#approach">Approach</a>
+        <a href="#progress">Progress</a>
+        <a href="#benchmarks">Benchmarks</a>
+        <a href="#autocomplete">Autocomplete</a>
+        <a href="#paper">Paper</a>
+        <a class="nav-github" href="https://github.com/braydos-h/CyberLite" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Open research &middot; Research preview</p>
+          <h1 id="hero-title">CyberLite</h1>
+          <p class="hero-tagline">Resource-efficient cybersecurity language model research.</p>
+
+          <blockquote class="north-star">
+            Can a sub-billion-parameter language model be post-trained into a useful cybersecurity assistant using parameter-efficient fine-tuning, distillation, retrieval, and quantization, while remaining practical on consumer hardware?
+          </blockquote>
+
+          <p class="hero-note">
+            <strong>Research preview.</strong> CyberLite is an active research project, not a security product. There are no trained checkpoints and no verified benchmark results in this repository yet. Tables marked <em>pending</em> are experiment plans, not findings.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn" href="assets/cyberlite-paper.pdf" target="_blank" rel="noopener">Read the paper <span class="btn-meta">PDF ↗</span></a>
+            <a class="btn btn-ghost" href="https://github.com/braydos-h/CyberLite" target="_blank" rel="noopener">View repository <span class="btn-meta">↗</span></a>
+          </div>
+        </div>
+
+        <aside class="status-card" aria-label="Project status at a glance">
+          <p class="card-kicker">Project status</p>
+          <dl class="status-list">
+            <div class="status-row">
+              <dt>Version</dt>
+              <dd>0.1.0 &middot; research preview</dd>
+            </div>
+            <div class="status-row">
+              <dt>Base model</dt>
+              <dd><code>Qwen/Qwen3.5-0.8B</code></dd>
+            </div>
+            <div class="status-row">
+              <dt>Checkpoints</dt>
+              <dd class="is-pending">None released</dd>
+            </div>
+            <div class="status-row">
+              <dt>Verified results</dt>
+              <dd class="is-pending">None yet</dd>
+            </div>
+            <div class="status-row">
+              <dt>Milestones</dt>
+              <dd>
+                <span class="status-inline">14 / 39 &middot; 36%</span>
+                <span class="bar bar--sm" role="img" aria-label="36 percent of milestones complete"><span style="width:36%"></span></span>
+              </dd>
+            </div>
+            <div class="status-row">
+              <dt>Code license</dt>
+              <dd>Apache-2.0</dd>
+            </div>
+          </dl>
+          <p class="status-foot">Progress snapshot &middot; 25 Nov 2026</p>
+        </aside>
+      </div>
+
+      <div class="wrap">
+        <ul class="stat-strip" aria-label="Key figures">
+          <li><span class="stat-num">0.853B</span><span class="stat-label">parameters</span></li>
+          <li><span class="stat-num">24</span><span class="stat-label">text layers</span></li>
+          <li><span class="stat-num">4–16 GB</span><span class="stat-label">VRAM targets</span></li>
+          <li><span class="stat-num">0</span><span class="stat-label">verified results</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Overview -->
+    <section class="section" id="overview" aria-labelledby="overview-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="kicker">01 &middot; Overview</p>
+          <h2 id="overview-title">Cybersecurity AI without enterprise hardware</h2>
+        </header>
+
+        <div class="overview-grid">
+          <div class="prose">
+            <p class="lead">Cybersecurity assistants are often built on models that need enterprise GPUs, large VRAM budgets, and always-on connectivity. That excludes independent researchers, students, small security teams, and air-gapped environments.</p>
+            <p>CyberLite asks a narrow, testable question: can a sub-billion-parameter model be post-trained into a useful cybersecurity assistant while remaining practical to train and run on ordinary hardware?</p>
+            <p>The project prioritizes low training cost, low VRAM, fast local inference, offline operation, reproducible evaluation, and honest reporting. The target model is <code>Qwen3.5-0.8B</code>; larger models are supported only as experimental controls.</p>
+            <p class="pull-line">Cybersecurity AI should be accessible without enterprise-grade hardware.</p>
+          </div>
+
+          <div class="principles">
+            <article class="principle">
+              <h3>Consumer hardware</h3>
+              <p>Training paths are designed around 4–16 GB VRAM classes, with a CPU-first baseline so the limits are measured rather than assumed.</p>
+            </article>
+            <article class="principle">
+              <h3>Offline by default</h3>
+              <p>No paid APIs, no automatic dataset downloads, and no execution of generated commands. Local data stays local.</p>
+            </article>
+            <article class="principle">
+              <h3>Evidence first</h3>
+              <p>Every published number must trace back to raw predictions, configuration, dataset version, hardware, and seeds. Until then, it stays blank.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Approach -->
+    <section class="section" id="approach" aria-labelledby="approach-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="kicker">02 &middot; Approach</p>
+          <h2 id="approach-title">A reproducible pipeline, from licensed data to local deployment</h2>
+          <p class="section-sub">The default workflow uses no paid APIs, downloads no datasets automatically, and never executes generated commands.</p>
+        </header>
+
+        <ol class="pipeline">
+          <li>
+            <span class="step">01</span>
+            <h3>Licensed sources</h3>
+            <p>ATT&amp;CK, CWE, NVD, OWASP, Linux and networking documentation, plus project-authored defensive workflows.</p>
+          </li>
+          <li>
+            <span class="step">02</span>
+            <h3>Clean &amp; screen</h3>
+            <p>Secret redaction, exact and SimHash deduplication, deterministic splits, and a 13-gram contamination screen.</p>
+          </li>
+          <li>
+            <span class="step">03</span>
+            <h3>Post-train</h3>
+            <p>LoRA and 4-bit QLoRA supervised fine-tuning on Qwen3.5-0.8B; optional offline distillation from a local teacher.</p>
+          </li>
+          <li>
+            <span class="step">04</span>
+            <h3>Retrieve</h3>
+            <p>A dependency-free BM25 baseline with citation-bearing evidence that is always treated as untrusted data.</p>
+          </li>
+          <li>
+            <span class="step">05</span>
+            <h3>Deploy</h3>
+            <p>CPU, GPU, and MPS inference, an OpenAI-compatible API, FIM/prefix autocomplete, and a GGUF export path.</p>
+          </li>
+          <li>
+            <span class="step">06</span>
+            <h3>Evaluate</h3>
+            <p>Fixed seeds, bootstrap intervals, and logged memory and latency. Nothing is promoted to results without review.</p>
+          </li>
+        </ol>
+
+        <div class="table-block">
+          <h3 class="subhead">Design at a glance</h3>
+          <div class="table-wrap">
+            <table>
+              <caption>Proposed design. Component choices are plans, not validated outcomes.</caption>
+              <thead>
+                <tr><th scope="col">Component</th><th scope="col">Design</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Base model</th><td><code>Qwen/Qwen3.5-0.8B</code> (instruct); base checkpoint where available</td></tr>
+                <tr><th scope="row">Adaptation</th><td>LoRA and 4-bit QLoRA supervised fine-tuning</td></tr>
+                <tr><th scope="row">Distillation</th><td>Offline, local teacher-generated responses with filtering and review</td></tr>
+                <tr><th scope="row">Autocomplete</th><td>FIM when the checkpoint supports it; prefix fallback otherwise</td></tr>
+                <tr><th scope="row">Retrieval</th><td>Dependency-free BM25 baseline with citation-bearing, untrusted evidence</td></tr>
+                <tr><th scope="row">Deployment</th><td>CPU/GPU/MPS local inference; OpenAI-compatible API; GGUF export path</td></tr>
+                <tr><th scope="row">Evaluation</th><td>Local harness with fixed seeds, uncertainty intervals, and memory and latency logging</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Model facts -->
+    <section class="section" id="model" aria-labelledby="model-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="kicker">03 &middot; The model</p>
+          <h2 id="model-title">Verified facts, not assumptions about the checkpoint</h2>
+          <p class="section-sub">These values were checked against the upstream checkpoint configuration and a local load, not inferred from the model name.</p>
+        </header>
+
+        <div class="table-wrap">
+          <table>
+            <caption>Qwen3.5-0.8B facts verified in the repository.</caption>
+            <thead>
+              <tr><th scope="col">Property</th><th scope="col">Observed value</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Checkpoint</th><td><code>Qwen/Qwen3.5-0.8B</code></td></tr>
+              <tr><th scope="row">Architecture class</th><td><code>Qwen3_5ForConditionalGeneration</code> (multimodal; text used here)</td></tr>
+              <tr><th scope="row">Parameters</th><td><strong>852,985,920</strong> total (~0.853B); vision tower 100,592,896</td></tr>
+              <tr><th scope="row">Text layers</th><td>24; 6 full-attention and 18 linear-attention layers</td></tr>
+              <tr><th scope="row">Hidden size / vocabulary</th><td>1024 / 248,320</td></tr>
+              <tr><th scope="row">Context configuration</th><td>Up to 262,144 positions (not a recommendation for consumer hardware)</td></tr>
+              <tr><th scope="row">FIM tokens</th><td><code>&lt;|fim_prefix|&gt;</code>, <code>&lt;|fim_suffix|&gt;</code>, <code>&lt;|fim_middle|&gt;</code>, <code>&lt;|fim_pad|&gt;</code> present</td></tr>
+              <tr><th scope="row">Model license</th><td>Apache-2.0 (verify upstream)</td></tr>
+              <tr><th scope="row">Tested stack</th><td>Python 3.12, PyTorch 2.15.0 CPU, Transformers 5.24.1, PEFT 0.22.0</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout--note">
+          <p><strong>Not a conventional dense transformer.</strong> Qwen3.5 combines gated full-attention and linear-attention blocks, includes a vision tower, and uses a conditional-generation checkpoint class. Loading it through <code>AutoModelForCausalLM</code> is not valid; CyberLite inspects the config and selects an appropriate auto class.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hypotheses -->
+    <section class="section" id="research" aria-labelledby="research-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="kicker">04 &middot; Research design</p>
+          <h2 id="research-title">Hypotheses stated before the experiments</h2>
+          <p class="section-sub">Thresholds are project-specific design choices, not universal standards. A hypothesis is falsified if the pre-specified comparison fails; null and negative results will be reported.</p>
+        </header>
+
+        <p class="table-note">Pre-registered hypotheses and operational tests.</p>
+        <p class="scroll-hint" aria-hidden="true">Scroll horizontally →</p>
+        <div class="table-wrap">
+          <table class="table-hypotheses" aria-label="Pre-registered hypotheses and operational tests">
+            <thead>
+              <tr><th scope="col">ID</th><th scope="col">Hypothesis</th><th scope="col">Falsification criterion</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="id-cell">H1</td>
+                <td>QLoRA adaptation improves held-out cybersecurity MCQ accuracy over the unadapted base model by at least 5 percentage points at matched prompting.</td>
+                <td>Observed improvement &lt; 5 points, or confidence interval includes zero.</td>
+              </tr>
+              <tr>
+                <td class="id-cell">H2</td>
+                <td>At a fixed data and step budget, 4-bit QLoRA retains at least 90% of the held-out accuracy of bf16 LoRA while reducing peak training VRAM.</td>
+                <td>Accuracy retention &lt; 90% or no measurable VRAM reduction.</td>
+              </tr>
+              <tr>
+                <td class="id-cell">H3</td>
+                <td>Offline distillation from a larger local teacher improves held-out task performance over supervised training on the same prompts at equal student compute.</td>
+                <td>No improvement, or a degradation larger than the pre-specified non-inferiority margin.</td>
+              </tr>
+              <tr>
+                <td class="id-cell">H4</td>
+                <td>Retrieval augmentation reduces the lexical unsupported-token proxy on evidence-grounded questions relative to closed-book generation, without a significant drop in answer token F1.</td>
+                <td>No reduction, or token F1 drops beyond the pre-specified margin.</td>
+              </tr>
+              <tr>
+                <td class="id-cell">H5</td>
+                <td>FIM or prefix autocomplete produces usable completions (syntax-valid and above a task-specific similarity threshold) at interactive latency on at least one consumer profile.</td>
+                <td>Threshold not met on any target profile.</td>
+              </tr>
+              <tr>
+                <td class="id-cell">H6</td>
+                <td>Narrow cybersecurity SFT causes a general-capability retention drop of no more than 3 percentage points on the selected retention set.</td>
+                <td>Drop &gt; 3 points with a confidence interval excluding the threshold.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="non-goals">
+          <h3 class="subhead">Non-goals</h3>
+          <ul class="tag-list">
+            <li>Autonomous exploitation or command execution</li>
+            <li>Unlicensed benchmark redistribution</li>
+            <li>Production-readiness claims from smoke tests</li>
+            <li>Leaderboard scores without raw predictions</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progress -->
+    <section class="section" id="progress" aria-labelledby="progress-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="kicker">05 &middot; Progress</p>
+          <h2 id="progress-title">What is actually done</h2>
+          <p class="section-sub">A milestone counts only when it is verified in the repository — code exists, tests pass, or measured artifacts exist. Planning does not count.</p>
+        </header>
+
+        <div class="progress-grid">
+          <div class="overall-card">
+            <p class="card-kicker">Overall</p>
+            <p class="overall-value">36<span>%</span></p>
+            <p class="overall-count">14 of 39 milestones verified</p>
+            <span class="bar" role="img" aria-label="36 percent of milestones complete"><span style="width:36%"></span></span>
+            <p class="overall-foot">Snapshot generated from <a href="https://github.com/braydos-h/CyberLite/blob/main/GOALS.md" target="_blank" rel="noopener">GOALS.md</a> and <a href="https://github.com/braydos-h/CyberLite/blob/main/docs/roadmap.md" target="_blank" rel="noopener">docs/roadmap.md</a>.</p>
+          </div>
+
+          <div class="goal-list" aria-label="Goal progress">
+            <div class="goal-row">
+              <div class="goal-name"><span class="goal-id">G1</span> Licensed, reproducible data foundation</div>
+              <span class="bar" role="img" aria-label="43 percent complete"><span style="width:43%"></span></span>
+              <div class="goal-value"><strong>43%</strong><span>3/7</span></div>
+            </div>
+            <div class="goal-row">
+              <div class="goal-name"><span class="goal-id">G2</span> Post-training on consumer hardware</div>
+              <span class="bar" role="img" aria-label="43 percent complete"><span style="width:43%"></span></span>
+              <div class="goal-value"><strong>43%</strong><span>3/7</span></div>
+            </div>
+            <div class="goal-row">
+              <div class="goal-name"><span class="goal-id">G3</span> Honest, reproducible evaluation</div>
+              <span class="bar" role="img" aria-label="33 percent complete"><span style="width:33%"></span></span>
+              <div class="goal-value"><strong>33%</strong><span>2/6</span></div>
+            </div>
+            <div class="goal-row">
+              <div class="goal-name"><span class="goal-id">G4</span> Practical local deployment</div>
+              <span class="bar" role="img" aria-label="50 percent complete"><span style="width:50%"></span></span>
+              <div class="goal-value"><strong>50%</strong><span>4/8</span></div>
+            </div>
+            <div class="goal-row">
+              <div class="goal-name"><span class="goal-id">G5</span> Distillation and retrieval</div>
+              <span class="bar" role="img" aria-label="20 percent complete"><span style="width:20%"></span></span>
+              <div class="goal-value"><strong>20%</strong><span>1/5</span></div>
+            </div>
+            <div class="goal-row">
+              <div class="goal-name"><span class="goal-id">G6</span> Publication and release</div>
+              <span class="bar" role="img" aria-label="17 percent complete"><span style="width:17%"></span></span>
+              <div class="goal-value"><strong>17%</strong><span>1/6</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phases">
+          <h3 class="subhead">Roadmap phases</h3>
+          <div class="phase-grid">
+            <div class="phase">
+              <div class="phase-top"><span>Phase 0 — Reproducible foundation</span><span class="phase-value">10/10</span></div>
+              <span class="bar" role="img" aria-label="100 percent complete"><span style="width:100%"></span></span>
+            </div>
+            <div class="phase">
+              <div class="phase-top"><span>Phase 1 — Dataset pilot</span><span class="phase-value">0/4</span></div>
+              <span class="bar" role="img" aria-label="0 percent complete"><span style="width:0%"></span></span>
+            </div>
+            <div class="phase">
+              <div class="phase-top"><span>Phase 2 — Core post-training comparison</span><span class="phase-value">0/5</span></div>
+              <span class="bar" role="img" aria-label="0 percent complete"><span style="width:0%"></span></span>
+            </div>
+            <div class="phase">
+              <div class="phase-top"><span>Phase 3 — Autocomplete</span><span class="phase-value">0/4</span></div>
+              <span class="bar" role="img" aria-label="0 percent complete"><span style="width:0%"></span></span>
+            </div>
+            <div class="phase">
+              <div class="phase-top"><span>Phase 4 — Distillation and retrieval</span><span class="phase-value">0/4</span></div>
+              <span class="bar" role="img" aria-label="0 percent complete"><span style="width:0%"></span></span>
+            </div>
+            <div class="phase">
+              <div class="phase-top"><span>Phase 5 — Quantization and CPU deployment</span><span class="phase-value">0/4</span></div>
+              <span class="bar" role="img" aria-label="0 percent complete"><span style="width:0%"></span></span>
+            </div>
+            <div class="phase">
+              <div class="phase-top"><span>Phase 6 — Publication</span><span class="phase-value">0/5</span></div>
+              <span class="bar" role="img" aria-label="0 percent complete"><span style="width:0%"></span></span>
+            </div>
+          </div>
+          <p class="fineprint">Progress snapshot: 25 November 2026. Regenerate the repository block with <code>make progress</code> after changing a checkbox; this page is a static snapshot.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Status -->
+    <section class="section" id="status" aria-labelledby="status-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="kicker">06 &middot; Experimental status</p>
+          <h2 id="status-title">Implemented is not the same as demonstrated</h2>
+          <p class="section-sub">Engineering can be complete while the research claim remains untested. The distinction is kept explicit here.</p>
+        </header>
+
+        <div class="table-wrap">
+          <table>
+            <caption>Repository state at version 0.1.0.</caption>
+            <thead>
+              <tr><th scope="col">Area</th><th scope="col">State</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Repository, package, tests, CI</th><td><span class="chip chip--ok">Implemented</span></td></tr>
+              <tr><th scope="row">Qwen3.5 architecture compatibility</th><td><span class="chip chip--ok">Verified</span> by local load and LoRA backward pass</td></tr>
+              <tr><th scope="row">Data preparation, provenance, contamination screen</th><td><span class="chip chip--ok">Implemented</span> <span class="chip chip--smoke">Smoke-validated</span></td></tr>
+              <tr><th scope="row">LoRA/QLoRA training pipeline</th><td><span class="chip chip--ok">Implemented</span> <span class="chip chip--smoke">Smoke-tested on CPU</span></td></tr>
+              <tr><th scope="row">Local inference and OpenAI-compatible API</th><td><span class="chip chip--ok">Implemented</span> <span class="chip chip--smoke">Unit-tested</span></td></tr>
+              <tr><th scope="row">Autocomplete (FIM + prefix fallback)</th><td><span class="chip chip--ok">Implemented</span> <span class="chip chip--smoke">Unit-tested</span></td></tr>
+              <tr><th scope="row">Offline distillation pipeline</th><td><span class="chip chip--ok">Implemented</span> <span class="chip chip--pending">Not run at research scale</span></td></tr>
+              <tr><th scope="row">Quantization backends</th><td><span class="chip chip--partial">Partial</span> bnb path implemented; GGUF delegated; CPU INT8 experimental</td></tr>
+              <tr><th scope="row">Benchmark evaluation</th><td><span class="chip chip--ok">Harness implemented</span> <span class="chip chip--pending">No research results</span></td></tr>
+              <tr><th scope="row">Paper</th><td><span class="chip chip--pending">Scaffold with explicit placeholders</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Benchmarks -->
+    <section class="section" id="benchmarks" aria-labelledby="benchmarks-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="kicker">07 &middot; Benchmarks</p>
+          <h2 id="benchmarks-title">No verified results exist yet</h2>
+        </header>
+
+        <div class="callout callout--warning">
+          <p><strong>The table below is a reporting template.</strong> Cells are intentionally blank. Do not cite them as measurements. A result is promoted only with raw predictions, configuration, dataset version, hardware, and seeds.</p>
+        </div>
+
+        <p class="table-note">Planned comparisons; all values pending.</p>
+        <p class="scroll-hint" aria-hidden="true">Scroll horizontally to see all conditions →</p>
+        <div class="table-wrap">
+          <table class="table-bench" aria-label="Planned benchmark comparisons; all values pending">
+            <thead>
+              <tr>
+                <th scope="col">Benchmark / task</th>
+                <th scope="col">Metric</th>
+                <th scope="col" class="num">Base</th>
+                <th scope="col" class="num">LoRA</th>
+                <th scope="col" class="num">QLoRA</th>
+                <th scope="col" class="num">Distilled</th>
+                <th scope="col" class="num">+RAG</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">CyberSecEval subset</th><td>Task accuracy</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td><span class="chip chip--pending">Pending</span></td></tr>
+              <tr><th scope="row">SecEval subset (eval only)</th><td>MCQ accuracy</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td><span class="chip chip--pending">Pending</span></td></tr>
+              <tr><th scope="row">Held-out security MCQ</th><td>Accuracy (95% CI)</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td><span class="chip chip--pending">Pending</span></td></tr>
+              <tr><th scope="row">Vulnerability classification</th><td>Macro F1 / FPR</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td><span class="chip chip--pending">Pending</span></td></tr>
+              <tr><th scope="row">Secure code completion</th><td>Exact match / syntax valid</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td><span class="chip chip--pending">Pending</span></td></tr>
+              <tr><th scope="row">Grounded QA</th><td>Token F1 / grounding proxy</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td><span class="chip chip--pending">Pending</span></td></tr>
+              <tr><th scope="row">General retention</th><td>Retention accuracy</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td><span class="chip chip--pending">Pending</span></td></tr>
+              <tr><th scope="row">Inference</th><td>Tokens/s, peak memory</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td><span class="chip chip--pending">Pending</span></td></tr>
+              <tr><th scope="row">Training</th><td>Peak VRAM, duration, cost</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td class="num dash">—</td><td><span class="chip chip--pending">Pending</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="fineprint">Licenses differ: CyberSecEval is obtained under upstream terms; SecEval is CC-BY-NC-SA and evaluation-only. CyberLite does not redistribute either dataset. See <a href="https://github.com/braydos-h/CyberLite/blob/main/docs/evaluation.md" target="_blank" rel="noopener">evaluation methodology ↗</a>.</p>
+      </div>
+    </section>
+
+    <!-- Autocomplete -->
+    <section class="section" id="autocomplete" aria-labelledby="autocomplete-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="kicker">08 &middot; Autocomplete</p>
+          <h2 id="autocomplete-title">Context-aware completion for security work</h2>
+          <p class="section-sub">A local completion service for code, shell commands, detection rules, and configuration. It returns text as data. It does not execute, evaluate, or write generated commands to disk.</p>
+        </header>
+
+        <div class="autocomplete-grid">
+          <div>
+            <h3 class="subhead">Supported profiles</h3>
+            <ul class="tag-list tag-list--chips" aria-label="Supported languages and formats">
+              <li>bash</li><li>python</li><li>powershell</li><li>yara</li><li>sigma</li><li>regex</li><li>bpf</li><li>tcpdump</li><li>nginx</li><li>dockerfile</li><li>sql</li><li>json</li><li>generic</li>
+            </ul>
+
+            <h3 class="subhead">Two completion modes</h3>
+            <ul class="feature-list">
+              <li><strong>FIM</strong> Fill-in-the-middle prompting, used only when the checkpoint genuinely supports it. Token presence alone is not treated as evidence of FIM quality.</li>
+              <li><strong>Prefix</strong> An instruction/chat prompt with before- and after-cursor context. The fallback for instruction-tuned models.</li>
+              <li><strong>Auto</strong> FIM if the tokenizer defines FIM tokens, otherwise prefix. The response always reports which mode was used.</li>
+            </ul>
+
+            <p class="safety-inline"><span class="lock" aria-hidden="true">●</span> Every response includes <code>executed: false</code> and <code>requires_review: true</code>. Generated commands are never run by the project.</p>
+          </div>
+
+          <div class="code-card">
+            <div class="code-head">
+              <span>POST /v1/autocomplete</span>
+              <button class="copy-btn" type="button" data-copy="autocomplete-code">Copy</button>
+            </div>
+            <pre id="autocomplete-code"><code><span class="c-prompt">$</span> curl http://127.0.0.1:8765/v1/autocomplete \
+  -H <span class="c-str">'Content-Type: application/json'</span> \
+  -d <span class="c-str">'{
+    "prefix": "grep -R \"failed password\" ",
+    "language": "bash",
+    "mode": "auto",
+    "max_tokens": 96
+  }'</span></code></pre>
+            <p class="code-note">Returns completion text, mode, latency, token counts, and memory metadata. Bind to loopback unless you add authentication and network controls.</p>
+          </div>
+        </div>
+
+        <div class="endpoint-list" aria-label="Local API endpoints">
+          <span class="endpoint-label">Local API</span>
+          <code>/health</code>
+          <code>/v1/models</code>
+          <code>/v1/completions</code>
+          <code>/v1/chat/completions</code>
+          <code>/v1/autocomplete</code>
+          <code>/v1/autocomplete/feedback</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hardware -->
+    <section class="section" id="hardware" aria-labelledby="hardware-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="kicker">09 &middot; Hardware</p>
+          <h2 id="hardware-title">Targets, not promises</h2>
+          <p class="section-sub">The 4, 6, 8, 12, and 16 GB VRAM classes are experimental targets. Whether a configuration fits depends on the attention kernel, allocator, sequence length, batch size, optimizer, framework version, and concurrent display use. Always measure.</p>
+        </header>
+
+        <p class="table-note">Suggested starting points on consumer hardware; planning estimates, not measured guarantees.</p>
+        <p class="scroll-hint" aria-hidden="true">Scroll horizontally to see all columns →</p>
+        <div class="table-wrap">
+          <table class="table-hardware" aria-label="Suggested starting points on consumer hardware; planning estimates, not measured guarantees">
+            <thead>
+              <tr><th scope="col">Profile</th><th scope="col">Training starting point</th><th scope="col">Inference starting point</th><th scope="col">Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">CPU only</th><td>fp32 LoRA smoke only</td><td>GGUF 4-bit via llama.cpp, or fp32 reference</td><td>Slow; useful for correctness and offline demos</td></tr>
+              <tr><th scope="row">4 GB VRAM</th><td>4-bit QLoRA, seq 512, rank 8</td><td>4-bit / GGUF</td><td>Reduce sequence length before rank; expect allocator pressure</td></tr>
+              <tr><th scope="row">6 GB VRAM</th><td>4-bit QLoRA, seq 1024, rank 16</td><td>4-bit or GGUF q4/q5</td><td>Practical minimum GPU training class</td></tr>
+              <tr><th scope="row">8 GB VRAM</th><td>4-bit QLoRA, seq 1024–2048</td><td>4-bit, 8-bit, or bf16 for short contexts</td><td>Room for evaluation batch size 1</td></tr>
+              <tr><th scope="row">12 GB VRAM</th><td>bf16 LoRA at seq 512–1024, or QLoRA</td><td>bf16 / 8-bit</td><td>Useful for controlled LoRA-vs-QLoRA comparisons</td></tr>
+              <tr><th scope="row">16 GB VRAM</th><td>bf16 LoRA, seq 1024–2048</td><td>bf16</td><td>Can host some larger control models for evaluation</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="hardware-note">
+          <div>
+            <h3 class="subhead">The planned hardware path</h3>
+            <p>Train and test as much of the pipeline as possible on CPU first, and publish what the CPU path can and cannot do. That baseline establishes which steps are reproducible without a GPU, how long they take, and where the bottlenecks actually are.</p>
+            <p>Once the CPU evidence is in place, the next step is to seek funding for a CUDA GPU so post-training can continue at research scale. Until that happens, any GPU results in this repository should be read as planned, not measured.</p>
+          </div>
+          <aside class="fact-card">
+            <p class="card-kicker">Rule of thumb</p>
+            <p>A 0.853B-parameter model needs about <strong>1.6 GiB</strong> for 16-bit weights, or about <strong>0.4 GiB</strong> at 4-bit. Activations, optimizer state, CUDA context, fragmentation, and framework overhead dominate the difference between “fits in theory” and “fits in practice.”</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Safety -->
+    <section class="section" id="safety" aria-labelledby="safety-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="kicker">10 &middot; Safety &amp; limitations</p>
+          <h2 id="safety-title">Boundaries in the code, and limits that remain</h2>
+        </header>
+
+        <div class="safety-grid">
+          <div class="safety-col">
+            <h3>Safety boundaries</h3>
+            <ul class="check-list">
+              <li>No generated command or code is executed by the inference, autocomplete, evaluation, or server modules.</li>
+              <li>Autocomplete responses are flagged <code>executed: false</code> and <code>requires_review: true</code>.</li>
+              <li>Evaluation checks Python syntax with <code>ast.parse</code>; it never imports or runs generated code.</li>
+              <li>The local API has no tool-calling or shell tool surface.</li>
+              <li>RAG evidence is labeled untrusted; the prompt tells the model not to follow instructions embedded in retrieved text.</li>
+              <li>Human review is mandatory for any security decision.</li>
+            </ul>
+            <p class="fineprint">These are code-level boundaries, not a complete security architecture. See <a href="https://github.com/braydos-h/CyberLite/blob/main/docs/safety.md" target="_blank" rel="noopener">docs/safety.md ↗</a>.</p>
+          </div>
+
+          <div class="safety-col">
+            <h3>Known limitations</h3>
+            <ul class="x-list">
+              <li>0.8B parameters impose a hard capacity limit on broad security knowledge, multi-step reasoning, and long-context analysis.</li>
+              <li>Qwen3.5 is a hybrid linear/full-attention multimodal architecture; architecture support can change between library versions.</li>
+              <li>The base checkpoint’s FIM training status is unknown. Token presence is not evidence of FIM quality.</li>
+              <li>Knowledge is frozen at the checkpoint’s training cutoff. Security facts, versions, and mitigations change.</li>
+              <li>The lexical contamination screen catches verbatim overlap only; paraphrased leakage and memorization may remain.</li>
+              <li>Single-machine latency and memory numbers are not portable.</li>
+              <li>There is no sandbox for generated commands, and there is no trained research checkpoint to evaluate.</li>
+            </ul>
+            <p class="fineprint">See <a href="https://github.com/braydos-h/CyberLite/blob/main/docs/limitations.md" target="_blank" rel="noopener">docs/limitations.md ↗</a>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Paper -->
+    <section class="section" id="paper" aria-labelledby="paper-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="kicker">11 &middot; Paper &amp; citation</p>
+          <h2 id="paper-title">A living research scaffold</h2>
+        </header>
+
+        <div class="paper-grid">
+          <div class="paper-copy">
+            <p class="paper-title">CyberLite: Resource-Efficient Post-Training of Sub-Billion-Parameter Language Models for Cybersecurity and Context-Aware Autocompletion</p>
+            <p>Modern cybersecurity language models often assume enterprise GPUs, substantial VRAM, and continuous connectivity. CyberLite is an open research program that asks whether a sub-billion-parameter model can be post-trained into a useful cybersecurity assistant while remaining practical to train and deploy on consumer hardware.</p>
+            <p>The manuscript specifies hypotheses, data methodology, training protocols, evaluation metrics, and ablation plans, and reports verified engineering facts about the implementation. <strong>It does not report benchmark results.</strong> All performance tables are explicitly marked as pending. The contribution at this stage is a reproducible, safety-conscious pipeline and a falsifiable experimental design, not a claim of state-of-the-art capability.</p>
+            <div class="hero-actions">
+              <a class="btn" href="assets/cyberlite-paper.pdf" target="_blank" rel="noopener">Paper <span class="btn-meta">PDF ↗</span></a>
+              <a class="btn btn-ghost" href="https://github.com/braydos-h/CyberLite/blob/main/paper/main.tex" target="_blank" rel="noopener">LaTeX source <span class="btn-meta">↗</span></a>
+            </div>
+            <p class="fineprint">PDF snapshot built from <code>paper/main.tex</code> on 25 November 2026. The current source and CI-built artifact are on GitHub.</p>
+          </div>
+
+          <div class="code-card code-card--bib">
+            <div class="code-head">
+              <span>BibTeX</span>
+              <button class="copy-btn" type="button" data-copy="bibtex-code">Copy</button>
+            </div>
+            <pre id="bibtex-code"><code><span class="c-key">@software</span>{cyberlite2026,
+  title    = {CyberLite: Resource-Efficient
+              Post-Training of Sub-Billion-Parameter
+              Language Models for Cybersecurity and
+              Context-Aware Autocompletion},
+  author   = {{CyberLite Contributors}},
+  year     = {2026},
+  version  = {0.1.0},
+  url      = {https://github.com/braydos-h/CyberLite},
+  license  = {Apache-2.0},
+  note     = {Research preview; no trained checkpoint
+              or verified benchmark results released.}
+}</code></pre>
+            <p class="code-note">Also available as <a href="https://github.com/braydos-h/CyberLite/blob/main/CITATION.cff" target="_blank" rel="noopener">CITATION.cff ↗</a>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <a class="brand brand--footer" href="#top">
+          <span class="brand-mark" aria-hidden="true">CL</span>
+          <span class="brand-name">CyberLite</span>
+        </a>
+        <p>Resource-efficient cybersecurity language model research. Open, local, and honest about what is not yet known.</p>
+        <p class="footer-caveat">Not a security product. No trained checkpoints or verified benchmark results are released.</p>
+      </div>
+
+      <div class="footer-links">
+        <div>
+          <h3>Project</h3>
+          <ul>
+            <li><a href="https://github.com/braydos-h/CyberLite" target="_blank" rel="noopener">Repository ↗</a></li>
+            <li><a href="assets/cyberlite-paper.pdf" target="_blank" rel="noopener">Paper (PDF) ↗</a></li>
+            <li><a href="https://github.com/braydos-h/CyberLite/tree/main/docs" target="_blank" rel="noopener">Documentation ↗</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Research</h3>
+          <ul>
+            <li><a href="https://github.com/braydos-h/CyberLite/blob/main/GOALS.md" target="_blank" rel="noopener">Goals ↗</a></li>
+            <li><a href="https://github.com/braydos-h/CyberLite/blob/main/docs/roadmap.md" target="_blank" rel="noopener">Roadmap ↗</a></li>
+            <li><a href="https://github.com/braydos-h/CyberLite/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog ↗</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Contact</h3>
+          <ul>
+            <li>Brayden Habets</li>
+            <li class="footer-email">braydenhabets19<br>(at) gmail.com</li>
+            <li><a href="https://github.com/braydos-h/CyberLite/blob/main/SECURITY.md" target="_blank" rel="noopener">Security policy ↗</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap footer-bottom">
+      <p>© 2026 CyberLite contributors. Original code licensed under Apache-2.0.</p>
+      <p>Progress snapshot: 25 November 2026 &middot; <a href="#top">Back to top ↑</a></p>
+    </div>
+  </footer>
+</body>
+</html>
